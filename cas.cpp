@@ -30,7 +30,7 @@ void dfs(int s, int vertexCnt){
             dfs(i, vertexCnt);
 }
 
-vector<int> extractCircuit(vector< vector<int> >& adj/*, map<int,int>& N*/, int startVertex)
+vector<int> extractCircuit(vector< vector<int> >& adj, int startVertex)
 {
     unordered_map<int,int> edge_count;
   
@@ -141,8 +141,9 @@ int main(){
 
     
     // проверка условий на степени входа-выхода у вершин:
-    // > если для всех вершин deg+ == deg-, и init == final и init (=final) принадлежит единственной комп. связности
-    // > если для всех вершин кроме двух, то init=a, final=b
+    // > если для всех вершин deg+ == deg-, и init == result и (init принадлежит единственной комп. связности или ребер нет)
+    // > если для всех вершин кроме двух, то init=a, result=b
+    // дополнительные условия init==result / init==a, result==b проверяются позднее
     int v1 = -1, v2 = -1;
     bool bad = false;
     for(int i = 0 ; i < N.size() && !bad ; i++){
@@ -227,6 +228,7 @@ int main(){
             }
         }
     }
+    cout << "Serializable history =)\n";
     if(nCas > 0)
         cout << "Sequentional order:\n";
     
