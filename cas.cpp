@@ -120,8 +120,17 @@ int main(){
         }
         else{
             // ищем первую вершину, в которой значение != ops[i].expVal
+            // и для которой существует успешный CAS со значением new=value || это вершина init/result
+            // второе условие нужно, чтобы не приклеить ребро к изолированной вершине
             for (const auto& [value, idx] : N) {
-                if(value != ops[i].expVal){
+                bool existSuccessOp = false;
+                for(int j = 0 ; j < nCas ; j++){
+                    if(ops[j].res && value == ops[j].newVal){
+                        existSuccessOp = true;
+                        break;
+                    }
+                }
+                if((value != ops[i].expVal) && (existSuccessOp || value == init || value == result)){
                     edges[idx][idx]++;
                     break;
                 }
